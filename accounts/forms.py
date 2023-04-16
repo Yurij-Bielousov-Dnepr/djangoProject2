@@ -1,14 +1,29 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from .models import Visitor
+
+
+class EditVisitorProfileForm(forms.ModelForm):
+    class Meta:
+        model = Visitor
+        fields = ('userNick', 'category', 'district', 'languages', 'phone_number', 'email', 'about_me')
 
 class AddEmailForm(forms.Form):
     email = forms.EmailField(label=_('Email address'))
 
 class RemoveEmailForm(forms.Form):
     email = forms.EmailField(label=_('Email address to remove'))
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from .models import Visitor
+
+class CustomAuthenticationForm(AuthenticationForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = Visitor
+        fields = ['username', 'password']
 
 class VisitorForm(forms.ModelForm):
     class Meta:

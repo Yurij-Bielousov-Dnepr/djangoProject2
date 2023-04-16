@@ -3,19 +3,29 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
-
-from .forms import AddEmailForm, RemoveEmailForm
+from django.views import generic
+from .forms import AddEmailForm, RemoveEmailForm, EditVisitorProfileForm
 from .forms import VisitorForm
+from .forms import CustomAuthenticationForm
 
+
+class LoginView(generic.FormView):
+    form_class = CustomAuthenticationForm
+    template_name = 'accounts/login.html'
+    success_url = reverse_lazy('index')
+
+
+@login_required
 def edit_visitor_profile(request):
     visitor = request.user.visitor
     if request.method == 'POST':
-        form = VisitorForm(request.POST, request.FILES, instance=visitor)
+        form = EditVisitorProfileForm(request.POST, instance=visitor)
         if form.is_valid():
             form.save()
+            return redirect('profile')
     else:
-        form = VisitorForm(instance=visitor)
-    return render(request, 'edit_visitor_profile.html', {'form': form})
+        form = EditVisitorProfileForm(instance=visitor)
+    return render(request, 'accounts/edit_visitor_profile.html', {'form': form})
 
 @login_required
 def account_email(request):
@@ -51,4 +61,68 @@ def account_email(request):
         'visitor_form': visitor_form,
         'remove_form': remove_form,
     }
-    return render(request, 'account_email.html', context)
+    return render(request, 'accounts/email.html', context)
+
+
+def signup_closed(request):
+    return None
+
+
+def verification_sent(request):
+    return None
+
+
+def verified_email_required(request):
+    return None
+
+
+def sign_in(request):
+    return None
+
+
+def signup(request):
+    return None
+
+
+def password_set(request):
+    return None
+
+
+def password_reset_from_key_done(request):
+    return None
+
+
+def password_reset_from_key(request):
+    return None
+
+
+def password_reset_done(request):
+    return None
+
+
+def password_reset(request):
+    return None
+
+
+def password_change(request):
+    return None
+
+
+def login(request):
+    return None
+
+
+def account_inactive(request):
+    return None
+
+
+def email_confirm(request):
+    return None
+
+
+def email(request):
+    return None
+
+
+def logout(request):
+    return None

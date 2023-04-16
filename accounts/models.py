@@ -9,7 +9,9 @@ from django.utils import timezone
 
 
 class Visitor(models.Model):
+    user = models.OneToOneField( User, on_delete=models.CASCADE, related_name='visitor' )
     userNick = models.CharField(max_length=255)
+    password = models.CharField( max_length=255, blank=False )
     category = models.CharField(max_length=255, choices=[('Helper', 'Helper'), ('Customer', 'Customer')], default='Customer')
     district = models.ManyToManyField(Region)
     languages = models.ManyToManyField(Language)
@@ -18,6 +20,7 @@ class Visitor(models.Model):
     email = models.EmailField(blank=True)
     last_activity = models.DateTimeField( auto_now=True )
     favorites = models.ForeignKey(Favorites, on_delete=models.CASCADE, null=True, blank=True)
+    about_me = models.TextField( blank=True )  # новое поле "обо мне"
 
     def __str__(self):
         return self.userNick
