@@ -16,6 +16,9 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from accounts.models import Stats
+from offer.models import Helper
 from .decorators import admin_only
 from .forms import *
 from .models import *
@@ -39,163 +42,11 @@ def my_view(request):
     context = {
         'menu_items': menu_items,
     }
-    return render(request, 'header.html', context)
-
-class VIPView(TemplateView):
-    template_name = 'helpy/VIP.html'
-
-@method_decorator(login_required, name='dispatch')
-class VIPServicesView(TemplateView):
-    template_name = 'helpy/VIP.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = VIPServicesForm()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = VIPServicesForm(request.POST)
-        if form.is_valid():
-            # Process the form data
-            # ...
-            return render(request, 'success.html')
-        else:
-            context = self.get_context_data(form=form)
-            return self.render_to_response(context)
-
-
-@method_decorator(staff_member_required, name='dispatch')
-class ReviewUpdateView(UpdateView):
-    model = Review
-    fields = ['is_approved']
-    template_name_suffix = '_update_form'
-    success_url = reverse_lazy('moderate')
-
-@method_decorator(staff_member_required, name='dispatch')
-class ModerateView(ListView):
-    model = Review
-    template_name = 'helpy/moderation.html'
-    context_object_name = 'reviews'
-
-    def get_queryset(self):
-        return Review.objects.filter(is_approved='0')
-
-# тут надо разобраться модернизировать вьюху чтобы она модерила все: статьи, события и отзывы
-
-@user_passes_test( lambda u: u.is_staff )
-def moderation(request):
-    articles = Article.objects.filter( is_approved=False )
-    events = Event.objects.filter( is_approved=False )
-    reviews = Review.objects.filter( is_approved=False )
-
-    if request.method == 'POST':
-        for obj in articles:
-            action = request.POST.get( 'action_{}'.format( obj.id ) )
-            if action == 'approve':
-                obj.is_approved = True
-                obj.save()
-            elif action == 'delete':
-                obj.delete()
-            elif action == 'edit':
-                return redirect( 'article_edit', obj.pk )
-
-        for obj in events:
-            action = request.POST.get( 'action_{}'.format( obj.id ) )
-            if action == 'approve':
-                obj.is_approved = True
-                obj.save()
-            elif action == 'delete':
-                obj.delete()
-            elif action == 'edit':
-                return redirect('update_event', pk=obj.pk)
-
-        for obj in reviews:
-            action = request.POST.get( 'action_{}'.format( obj.id ) )
-            if action == 'approve':
-                obj.is_approved = True
-                obj.save()
-            elif action == 'delete':
-                obj.delete()
-            elif action == 'edit':
-                return redirect( 'review_edit', obj.pk )
-
-        return redirect( 'moderation' )
-
-    context = {
-        'articles': articles,
-        'events': events,
-        'reviews': reviews,
-    }
-    return render( request, 'helpy/moderation.html', context )
-
-
-class ReviewCreateView(CreateView):
-    model = Re_view
-    form_class = ReviewForm
-    template_name = 'helpy/reviews/review_add.html'
-    success_url = reverse_lazy('reviews:thanks')
-
-    def form_valid(self, form):
-        review = form.save( commit=False )
-        review.reviewer_name = form.cleaned_data.get( 'reviewer_name' )
-        review.helper_name = form.cleaned_data.get( 'helper_name' )
-        review.rating = form.cleaned_data.get( 'rating' )
-        review.tag = form.cleaned_data.get( 'tag' )
-        review.level_of_service = form.cleaned_data.get( 'level_of_service' )
-        review.review_text = form.cleaned_data.get( 'review_text' )
-        review.wishes = form.cleaned_data.get( 'wishes' )
-        review.save()
-        return super().form_valid( form )
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data( **kwargs )
-        context['form'] = ReviewForm()
-        return context
-
-
-
-def review_helper(request):
-    context = {
-        'page_title': _('User Reviews'),
-        'page_description': _('User reviews are important for evaluating the quality and usability of the website. Sorting and adding reviews are important components of the user experience. They allow users to quickly find the information they need and share their opinion. It is important to ensure the security of reviews by checking for spam and moderation.'),
-        'add_review_url': 'reviews_add',
-        'reviews_list_url': 'reviews_list',
-    }
-    return render(request, 'helpy/reviews/review_helper.html', context)
-
-def review_list_helper(request):
-    reviews = Re_view.objects.all()
-
-    sort_by = request.GET.get( 'sort', 'rating' )
-    sort_order = request.GET.get( 'order', 'desc' )
-
-    if sort_order == 'desc':
-        sort_by = f'-{sort_by}'
-
-    reviews = reviews.order_by( sort_by )
-
-    paginator = Paginator(reviews, 9)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'reviews': page_obj,
-        'sort_by': sort_by,
-    }
-    return render(request, 'helpy/reviews/reviews_list.html', context)
-
-
-def review_detail(request, pk):
-    review = get_object_or_404(Re_view, pk=pk)
-    context = {
-        'review': review,
-    }
-    return render(request, 'helpy/reviews/review_detail.html', context)
+    return render(request, 'base_templates/header.html', context)
 
 
 class HelpMyView(LoginRequiredMixin, View):
-    template_name = "helpy/help/helpmy.html"
+    template_name = "helpy/helpmy.html"
     form_class = HelpRequestForm
 
     def get(self, request, *args, **kwargs):
@@ -222,7 +73,7 @@ class HelpMyView(LoginRequiredMixin, View):
             active_helpers_count = Helper.objects.filter(user_offer_is_free=True).count()
             stats = Stats.objects.get(date=date.today())
             online_users_count = stats.online_users
-            return render(request, 'helpy/help/help.html', {'form': form, 'free_helpers': free_helpers,
+            return render(request, 'helpy/help.html', {'form': form, 'free_helpers': free_helpers,
                                                  'active_helpers_count': active_helpers_count,
                                                  'help_requests_count': help_requests_count,
                                                  'online_users_count': online_users_count})
@@ -234,7 +85,7 @@ class HelpMyView(LoginRequiredMixin, View):
 class CreateHelper(CreateView):
     model = Helper
     form_class = HelperCreateForm
-    template_name = 'helpy/offer/create_helper.html'
+    template_name = 'offer/helper_form.html'
     success_url = reverse_lazy('helper_profile')
 
     def form_valid(self, form):
@@ -262,7 +113,7 @@ def add_tag(request):
     if form.errors:
         context['errors'] = form.errors
 
-    return render( request, 'helpy/offer/helper_form.html', context )
+    return render( request, 'offer/helper_form.html', context )
 
 def language_form(request):
     if request.method == 'POST':
@@ -274,7 +125,7 @@ def language_form(request):
             return redirect('helper_form')
     else:
         form = LanguageForm()
-    return render( request, 'helpy/offer/helper_form.html', {'form': form} )
+    return render( request, 'offer/helper_form.html', {'form': form} )
 def helper_form(request):
     if request.method == 'POST':
         form = HelperCreateForm(request.POST)
@@ -284,56 +135,10 @@ def helper_form(request):
             return redirect('success')
     else:
         form = HelperCreateForm()
-    return render(request, 'helpy/offer/helper_form.html', {'form': form})
+    return render(request, 'offer/helper_form.html', {'form': form})
 
 def success(request):
-    return render(request, 'helpy/offer/success.html')
-
-class LoginView(auth_views.LoginView):
-    template_name = 'accounts/login.html'
-
-
-class LogoutView(auth_views.LogoutView):
-    template_name = 'accounts/login.html'
-
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        logout(request)
-        return redirect('login')
-
-class SignupView(FormView):
-    form_class = UserCreationForm
-    template_name = 'accounts/signup.html'
-    success_url = reverse_lazy('index') # здесь нужно указать URL главной страницы
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        user = form.save()
-        auth_login(self.request, user) # авторизуем пользователя
-        return response
-
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, 'Invalid form submission.')
-            return render(request, self.template_name, {'form': form})
-
-
-login_view = LoginView.as_view()
-logout_view = LogoutView.as_view()
-signup_view = SignupView.as_view()
-
+    return render(request, 'offer/success.html')
 
 def get_languages_with_flags(languages):
     result = []
@@ -346,66 +151,6 @@ def get_languages_with_flags(languages):
         result.append((code, name, flag))
     return result
 
-@admin_only
-def moderation_view(request):
-    """
-    Представление для модерации статей и событий
-    """
-    articles = Article.objects.filter(is_approved=False)
-    events = Event.objects.filter(is_approved=False)
-    return render( request, 'helpy/admin_only.html', {'articles': articles, 'events': events} )
-
-def review_list(request):
-    reviews = Review.objects.all()
-    order = request.GET.get('order', '-created_at')
-    paginator = Paginator(reviews.order_by(order), 9)
-    page = request.GET.get('page')
-    reviews = paginator.get_page(page)
-    context = {'reviews': reviews, 'order': order}
-    return render( request, 'helpy/event_article/review.html', context=context )
-
-# def helper_detail(request, helper_id):
-#     helper = get_object_or_404(Helper, id=helper_id)
-#     reviews = Review.objects.filter(helper=helper)
-#
-#     support_levels = Helper.objects.values_list('support_level', flat=True)
-#
-#     context = {
-#         'helper': helper,
-#         'reviews': reviews,
-#         'name': helper.name,
-#         'tags': helper.tags.all(),
-#         'support_levels': support_levels,
-#         'region': helper.region,
-#         'contacts': helper.contacts,
-#         'user_offer_is_free': helper.user_offer_is_free,
-#         'user_type': helper.user_type,
-#     }
-#     return render(request, 'helpy/helper_detail.html', context)
-
-
-
-def add_review(request):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            helper_nick = form.cleaned_data['helper_nick']
-            category_help = form.cleaned_data['category_help']
-            problem_description = form.cleaned_data['problem_description']
-            rate = form.cleaned_data['rate']
-            comment = form.cleaned_data['comment']
-            helper = Helper.objects.get(name=helper_nick)
-            Review.objects.create(
-                helper=helper,
-                category_help=category_help,
-                problem_description=problem_description,
-                rate=rate,
-                comment=comment,
-            )
-            return redirect('reviews')
-    else:
-        form = ReviewForm()
-    return render( request, 'helpy/event_article/add_review.html', {'form': form} )
 
 def search_helpers(request):
     help_requests = HelpRequest.objects.all()
@@ -432,114 +177,22 @@ def search_helpers(request):
         'help_requests': help_requests,
         'tags': Tag_help.objects.all(),
     }
-    return render(request, 'helpmy.html', context)
+    return render(request, 'helpy/helpmy.html', context)
 
-# Классы-представления для статей (Article)
-class ArticleListView(ListView):
-    model = Article
-    template_name = 'helpy/event_article/articles.html'
-    context_object_name = 'articles'
-
-# def helpmy(request):
-#     return render( request, 'helpy/help/helpmy.html' )
-
-
-class Events(DetailView):
-    model = Event
-    template_name = 'helpy/event_article/events.html'
-    context_object_name = 'event'
-
-def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
-    context['events'] = Event.objects.all()
-    return context
-
-from .forms import EventCreationForm
-
-class EventCreateView(CreateView):
-    model = Event
-    template_name = 'helpy/event_article/add_event.html'
-    form_class = EventCreationForm
-    fields = ('title', 'description', 'date', 'location', 'tags', 'is_favorite')
-    success_url = reverse_lazy('events')
-    # fields = ( 'Calendar', 'Events Calendar', 'Google Maps',)
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data( **kwargs )
-        context['form'] = self.form_class()
-        return context
-
-class EventUpdateView(View):
-    def get(self, request, *args, **kwargs):
-        event = get_object_or_404(Event, pk=kwargs['pk'])
-        form = EventForm(instance=event)
-        return render(request, 'event_form.html', {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        event = get_object_or_404(Event, pk=kwargs['pk'])
-        form = EventForm(request.POST, instance=event)
-        if form.is_valid():
-            form.save()
-            return redirect('event_detail', pk=event.pk)
-        return render(request, 'event_form.html', {'form': form})
-
-
-class EventDeleteView(DeleteView):
-    model = Event
-    template_name = 'helpy/event_confirm_delete.html'
-    success_url = reverse_lazy('events')
-@login_required # Ограничиваем доступ только для авторизованных пользователей
-def favorites(request):
-    user = request.user
-    # Получаем список статей и событий, которые пользователь добавил в избранное
-    favorite_articles = Article.objects.filter(favorites=user.profile)
-    favorite_events = Event.objects.filter(favorites=user.profile)
-    context = {
-        'favorite_articles': favorite_articles,
-        'favorite_events': favorite_events,
-    }
-    return render(request, 'favorites.html', context)
 
 # Классы-представления для помощников (Helper)
 class HelperListView(ListView):
     model = Helper
-    template_name = 'helpy/offer/helper_list.html'
+    template_name = 'offer/helper_list.html'
     context_object_name = 'helpers'
 
 
 class HelperDeleteView(LoginRequiredMixin, DeleteView):
     model = Helper
     success_url = reverse_lazy('helper_list')
-    template_name = 'helpy/offer/helper_confirm_delete.html'
+    template_name = 'offer/helper_confirm_delete.html'
     def get_object(self):
         return get_object_or_404(Helper, pk=self.kwargs['pk'], user=self.request.user)
-
-
-def add_article(request):
-    form = ArticleForm()
-    if request.method == 'POST':
-        form = ArticleForm(request.POST)
-        if form.is_valid():
-            # сохраняем данные из формы в базу данных
-            form.save()
-            # редиректим пользователя на другую страницу
-            return redirect('articles')
-    return render(request, 'helpy/event_article/add_article.html', {'form': form})
-
-class ArticleUpdateView(UpdateView):
-    model = Article
-    template_name = 'helpy/article_form.html'
-    fields = ('title', 'content',)
-    success_url = reverse_lazy('article_list')
-
-def add_event(request):
-    if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
-            event = form.save()
-            return redirect('event_detail', pk=event.pk)
-    else:
-        form = EventForm()
-    return render( request, 'helpy/event_article/add_event.html', {'form': form} )
 
 def add_helper(request):
     if request.method == 'POST':
@@ -551,46 +204,14 @@ def add_helper(request):
         form = HelpForm()
     return render( request, 'helpy/add_helper.html', {'form': form} )
 
-def events(request):
-    events = Event.objects.order_by('date')[:3]
-    context = {
-        'events': events
-    }
-    return render( request, 'helpy/event_article/events.html', context )
 
 def index(request):
-    return render( request, 'helpy/index.html' )
-
-# на случай если я решу использовать поиск по помощникам. пока концепция этого не предумсматиривает
-# def offer_help(request):
-#    return render( request, 'helpy/offer_help.html' )
-
-def articles(request):
-    return render( request, 'helpy/event_article/articles.html' )
-
-def events(request):
-    return render( request, 'helpy/event_article/events.html' )
-
-def about(request):
-    return render( request, 'helpy/about.html' )
-
-def login(request):
-    return render( request, 'helpy/../templates/account/sign_in.html' )
-
-class ArticleFormView:
-    def get(self, request, *args, **kwargs):
-        return render( request, 'helpy/event_article/articles.html' )
-class ArticleDetailView:
-    pass
-def donate_view(request):
-    return render(request, 'donate.html')
-def account_inactive(request):
-    return render(request, 'accounts/account_inactive.html')
+    return render( request, 'index.html' )
 
 class HelperUpdateView(LoginRequiredMixin, UpdateView ):
     model = Helper
     form_class = HelperUpdateForm
-    template_name = 'helpy/offer/update_helper.html'
+    template_name = 'offer/update_helper.html'
     success_url = reverse_lazy( 'helper_profile' )
 
     def get_object(self):
