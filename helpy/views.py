@@ -587,51 +587,6 @@ def donate_view(request):
 def account_inactive(request):
     return render(request, 'accounts/account_inactive.html')
 
-def email(request):
-    return render(request, 'accounts/email.html')
-
-def email_confirm(request):
-    return render(request, 'accounts/email_confirm.html')
-
-def login(request):
-    return render(request, 'accounts/login.html')
-
-def logout(request):
-    return render(request, 'accounts/logout.html')
-
-def password_change(request):
-    return render(request, 'accounts/password_change.html')
-
-def password_reset(request):
-    return render(request, 'accounts/password_reset.html')
-
-def password_reset_done(request):
-    return render(request, 'accounts/password_reset_done.html')
-
-def password_reset_from_key(request):
-    return render(request, 'accounts/password_reset_from_key.html')
-
-def password_reset_from_key_done(request):
-    return render(request, 'accounts/password_reset_from_key_done.html')
-
-def password_set(request):
-    return render(request, 'accounts/password_set.html')
-
-def sign_in(request):
-    return render(request, 'accounts/sign_in.html')
-
-def signup(request):
-    return render(request, 'accounts/signup.html')
-
-def signup_closed(request):
-    return render(request, 'accounts/signup_closed.html')
-
-def verification_sent(request):
-    return render(request, 'accounts/verification_sent.html')
-
-def verified_email_required(request):
-    return render(request, 'accounts/verified_email_required.html')
-
 class HelperUpdateView(LoginRequiredMixin, UpdateView ):
     model = Helper
     form_class = HelperUpdateForm

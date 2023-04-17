@@ -23,7 +23,6 @@ urlpatterns = [
     path( 'events/add/', views.EventCreateView.as_view(), name='add_event' ),
     path( 'events/<int:pk>/update/', views.EventUpdateView.as_view(), name='update_event' ),
     path( 'events/<int:pk>/delete/', views.EventDeleteView.as_view(), name='delete_event' ),
-    path('menu/', my_view, name='my_menu'),
 ]
 if settings.DEBUG:
     urlpatterns += static( settings.STATIC_URL, document_root=settings.STATIC_ROOT )

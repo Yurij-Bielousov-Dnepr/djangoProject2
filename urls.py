@@ -6,6 +6,7 @@ from helpy.views import index
 
 urlpatterns = [
     path( '', index, name='index' ),
+    path( 'admin/', admin.site.urls ),
     path( 'helpy/', include( 'helpy.urls' ) ),
     path( 'offer/', include( 'offer.urls' ) ),
     path( 'reviews/', include( 'reviews.urls' ) ),

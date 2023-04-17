@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
@@ -17,7 +17,8 @@ app_name = 'helpy'  # добавьте это, если используете �
 
 urlpatterns = [
 
-    path( 'admin/', admin.site.urls ),
+
+    path('accounts/', include('django.contrib.auth.urls')),
     path( 'account_inactive/', views.account_inactive, name='account_inactive' ),
     path( 'email/', views.email, name='email' ),
     path( 'email_confirm/', views.email_confirm, name='email_confirm' ),
