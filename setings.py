@@ -13,6 +13,7 @@ from allauth.socialaccount.providers import linkedin
 from allauth.account.auth_backends import AuthenticationBackend
 from django.contrib import staticfiles
 from django.conf import settings
+from django.core.checks import templates
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -27,6 +28,9 @@ STATICFILES_DIRS = [
     os.path.join( BASE_DIR, 'static' ),
     os.path.join( BASE_DIR, 'helpy', 'static', 'helpy' ),
     os.path.join( BASE_DIR, 'art_event', 'static', 'art_event' ),
+    os.path.join( BASE_DIR, 'reviews', 'static', 'reviews' ),
+    os.path.join( BASE_DIR, 'offer', 'static', 'offer' ),
+    os.path.join( BASE_DIR, 'accounts', 'static', 'accounts' ),
 
 ]
 WSGI_APPLICATION = 'helpy.wsgi.application'
@@ -78,7 +82,7 @@ LANGUAGES = [
     ('ru', 'Русский'),
 ]
 ROOT_URLCONF = 'djangoProject.urls'
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 SITE_URL = 'http://127.0.0.1:8000/'
 MEDIA_ROOT = os.path.join( BASE_DIR, 'media' )
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -110,7 +114,11 @@ TEMPLATES = [
         'DIRS': [
             os.path.join( BASE_DIR, 'templates/helpy' ),
             os.path.join( BASE_DIR, 'templates/accounts' ),
-            os.path.join( BASE_DIR, 'helpy/templatetags' )
+            os.path.join( BASE_DIR, 'templates/reviews' ),
+            os.path.join( BASE_DIR, 'templates/art_event' ),
+            os.path.join( BASE_DIR, 'templates/offer' ),
+            os.path.join( BASE_DIR, 'templates/base_templates' ),
+
         ],
         'APP_DIRS': False,
         'OPTIONS': {

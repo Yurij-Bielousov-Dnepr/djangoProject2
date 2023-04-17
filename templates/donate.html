@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-
+{% extends 'base_templates/base.html' %}
+{% load i18n %}
 {% block content %}
-  <h1>{% trans 'Поддержите нас' %}</h1>
-  <p>{% trans 'Вы можете пожертвовать любую сумму, чтобы помочь нам развиваться и улучшать наши сервисы.' %}</p>
-  <p>{% trans 'Спасибо за вашу поддержку!' %}</p>
+<h1>{% trans 'Support us' %}</h1>
+  <p>{% trans 'You can donate any amount to help us grow and improve our services.' %}</p>
+  <p>{% trans 'Thank you for your support!' %}</p>
 {% endblock %}
