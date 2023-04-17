@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler, Updater, MessageHandler
-from telegram.ext.filters import Filters
+#  from telegram.ext.filters import Filters
 from telegram_bot.views import echo
 
 bot = telegram.Bot(token='6121382783:AAExuYESoAEE8-KZl5r9NgjBlEVyqXvChik')
@@ -180,7 +180,7 @@ def webhook(request):
     # Регистрация функций-обработчиков команд и сообщений
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text, echo))
+    #   dp.add_handler(MessageHandler(Filters.text, echo))
 
     # Получение входящего сообщения и его обработка
     update = telegram.Update.de_json(request.body, bot)

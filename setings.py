@@ -22,10 +22,12 @@ from helpy import my_menu, static
 SECRET_KEY = 'django-insecure-!*_55!=_67w%7*s)(3=#2l)h0)+7!jw^y3v2dp^9^co1*sp%gx'
 BASE_DIR = os.path.dirname( os.path.dirname( os.path.abspath( __file__ ) ) )
 STATIC_ROOT = os.path.join( BASE_DIR, 'staticfiles' )
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join( BASE_DIR, 'static' ),
     os.path.join( BASE_DIR, 'helpy', 'static', 'helpy' ),
+    os.path.join( BASE_DIR, 'art_event', 'static', 'art_event' ),
+
 ]
 WSGI_APPLICATION = 'helpy.wsgi.application'
 
