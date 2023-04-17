@@ -3,8 +3,10 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from offer.models import Helper
 
 
+# Re_view - для отзыва на помошника
 class Re_view(models.Model):
     RATING_CHOICES = (
         (1, '1 звезда'),
@@ -49,3 +51,17 @@ class Re_view(models.Model):
 
     def __str__(self):
         return f"Review for {self.helper_name} by {self.reviewer_name}"
+
+    # Review - для отзыва на статью или событие
+class Review( models.Model ):
+    RATING_CHOICES = (
+            (1, '1 звезда'),
+            (2, '2 звезды'),
+            (3, '3 звезды'),
+            (4, '4 звезды'),
+            (5, '5 звезд'),
+        )
+    helper = models.ForeignKey( Helper, on_delete=models.CASCADE )
+    customer_name = models.CharField( max_length=255 )
+    rating = models.IntegerField( choices=RATING_CHOICES )
+    comment = models.TextField()
