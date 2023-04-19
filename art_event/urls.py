@@ -11,19 +11,17 @@ from django.conf.urls.static import static
 from django.contrib.admin.views.decorators import staff_member_required
 from . import views
 
-app_name = 'helpy'  # добавьте это, если используете пространства имен
+app_name = 'art_event'  # добавьте это, если используете пространства имен
 
 
 urlpatterns = [
-
-    path( 'articles/', views.ArticleListView.as_view(), name='articles' ),
-    path( 'articles/add/', views.add_article, name='add_article' ),
-    path( 'articles/<int:pk>/update/', views.ArticleUpdateView.as_view(), name='update_article' ),
-    path( 'events/', views.events, name='events' ),
-    path( 'events/add/', views.EventCreateView.as_view(), name='add_event' ),
-    path( 'events/<int:pk>/update/', views.EventUpdateView.as_view(), name='update_event' ),
-    path( 'events/<int:pk>/delete/', views.EventDeleteView.as_view(), name='delete_event' ),
-]
+    path( 'art_event/articles/', views.ArticleListView.as_view(), name='articles' ),
+    path( 'art_event/articles/add/', views.add_article, name='add_article' ),
+    path( 'art_event/articles/<int:pk>/update/', views.ArticleUpdateView.as_view(), name='update_article' ),
+    path( 'art_event/events/', views.events, name='events' ),
+    path( 'art_event/events/add/', views.EventCreateView.as_view(), name='add_event' ),
+    path( 'art_event/events/<int:pk>/update/', views.EventUpdateView.as_view(), name='update_event' ),
+    path( 'art_event/events/<int:pk>/delete/', views.EventDeleteView.as_view(), name='delete_event' ),]
 if settings.DEBUG:
     urlpatterns += static( settings.STATIC_URL, document_root=settings.STATIC_ROOT )
     # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

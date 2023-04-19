@@ -15,17 +15,17 @@ app_name = 'helpy'  # добавьте это, если используете �
 
 urlpatterns = [
 
-    path('help/', views.search_helpers, name='help'),
-    path('helpmy/', views.HelpMyView.as_view(), name='helpmy'),
-    path( 'set_language/', RedirectView.as_view( url='/' ), name='set_language' ),
-    path( 'helpers/', views.HelperListView.as_view(), name='helper_list' ),
-    path( 'helpers/add/', views.helper_form, name='add_helper' ),
-    path( 'helpers/<int:pk>/update/', views.HelperUpdateView.as_view(), name='update_helper_info' ),
-    path( 'helpers/<int:pk>/delete/', views.HelperDeleteView.as_view(), name='delete_helper' ),
-    path( 'about/', views.about, name='about' ),
-    path( 'donate/', views.donate_view, name='donate' ),
-    path('success/', views.success, name='success'),
-    path('menu/', my_view, name='my_menu'),
+    path( 'helpy/help/', views.search_helpers, name='help' ),
+    path( 'helpy/helpmy/', views.HelpMyView.as_view(), name='helpmy' ),
+    path( 'helpy/set_language/', RedirectView.as_view( url='/' ), name='set_language' ),
+    path( 'helpy/helpers/', views.HelperListView.as_view(), name='helper_list' ),
+    path( 'helpy/helpers/add/', views.helper_form, name='add_helper' ),
+    path( 'helpy/helpers/<int:pk>/update/', views.HelperUpdateView.as_view(), name='update_helper_info' ),
+    path( 'helpy/helpers/<int:pk>/delete/', views.HelperDeleteView.as_view(), name='delete_helper' ),
+    path( 'helpy/about/', views.about, name='about' ),
+    path( 'helpy/donate/', views.donate_view, name='donate' ),
+    path( 'helpy/success/', views.success, name='success' ),
+    path( 'helpy/menu/', views.my_view, name='my_menu' ),
 ]
 if settings.DEBUG:
     urlpatterns += static( settings.STATIC_URL, document_root=settings.STATIC_ROOT )

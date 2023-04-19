@@ -64,7 +64,7 @@ def account_email(request):
     return render(request, 'accounts/email.html', context)
 
 def success(request):
-    return render(request, 'helpy/offer/success.html')
+    return render(request, 'offer/success.html')
 
 class LoginView(auth_views.LoginView):
     template_name = 'accounts/login.html'
