@@ -7,13 +7,13 @@
 {#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
   </head>
   <body>
-    {% include 'header.html' %}
+    {% include 'base_templates/header.html' %}
 
     <main>
       {% block content %}{% endblock %}
     </main>
 
-    {% include 'footer.html' %}
+    {% include 'base_templates/footer.html' %}
 
 {#    <script src="{% static 'js/main.js' %}"></script>#}
   </body>

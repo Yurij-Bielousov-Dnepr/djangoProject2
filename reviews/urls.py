@@ -18,7 +18,7 @@ app_name = 'helpy'  # добавьте это, если используете �
 urlpatterns = [
 
     path( 'admin/', admin.site.urls ),
-    path( 'review_helper/', review_helper, name='review_helper' ),
+    path( 'review_helper/', review_helper.as_view(), name='review_helper' ),
     path( 'reviews/add/', ReviewCreateView.as_view(), name='reviews_add' ),
     path( 'reviews/', review_list_helper, name='reviews_list' ),
     path('reviews/<int:pk>/', review_detail, name='review_detail'),

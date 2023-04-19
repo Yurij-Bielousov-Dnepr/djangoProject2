@@ -1,41 +1,25 @@
 # views.py
 from datetime import date
-
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.contrib.auth import views as auth_views
-from django_countries import countries
 from django.core.paginator import Paginator
-from django.db.models import Count, Q
-from django.forms import ModelForm
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy, reverse
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
 from django.utils.translation import gettext as _
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.views.generic import DeleteView
+# from .forms import HelperForm
+from django.views.generic import ListView, UpdateView
+from django.views.generic.edit import CreateView
+from django_countries import countries
 from accounts.models import Stats
 from offer.models import Helper
-from .decorators import admin_only
 from .forms import *
 from .models import *
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-# from .forms import HelperForm
-from django.contrib.admin.views.decorators import staff_member_required
-from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, TemplateView
-from django.views.generic.edit import FormView, CreateView
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login as auth_login
 from .my_menu import *
-from django.contrib.auth.decorators import user_passes_test
-from django.utils.decorators import method_decorator
-from django.views import View
+
 
 def my_view(request):
     menu_items = get_menu_items()
@@ -115,17 +99,6 @@ def add_tag(request):
 
     return render( request, 'offer/helper_form.html', context )
 
-def language_form(request):
-    if request.method == 'POST':
-        form = LanguageForm(request.POST)
-        if form.is_valid():
-            languages = form.cleaned_data['languages']
-            for language in languages:
-                Language.objects.create(language=language)
-            return redirect('helper_form')
-    else:
-        form = LanguageForm()
-    return render( request, 'offer/helper_form.html', {'form': form} )
 def helper_form(request):
     if request.method == 'POST':
         form = HelperCreateForm(request.POST)
@@ -139,17 +112,6 @@ def helper_form(request):
 
 def success(request):
     return render(request, 'offer/success.html')
-
-def get_languages_with_flags(languages):
-    result = []
-    for code, name in languages:
-        country = countries.by_code(code)
-        if country:
-            flag = country.flag
-        else:
-            flag = ''
-        result.append((code, name, flag))
-    return result
 
 
 def search_helpers(request):
