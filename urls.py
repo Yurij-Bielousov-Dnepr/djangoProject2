@@ -10,7 +10,7 @@ urlpatterns = [
     path( 'helpy/', include( 'helpy.urls' ) ),
     path( 'offer/', include( 'offer.urls' ) ),
     path( 'reviews/', include( 'reviews.urls' ) ),
-#     path('accounts/', include('allauth.urls')), авторизация
+    path('accounts/', include('allauth.urls')),
     path( 'art_event/', include( 'art_event.urls' ) ),
     path( 'accounts/', include( 'accounts.urls' ) ),
 

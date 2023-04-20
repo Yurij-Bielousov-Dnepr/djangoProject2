@@ -1,6 +1,7 @@
 # settings.py
 import os
 import sys
+from django_telegram_bot import models
 
 from allauth import socialaccount
 from django.conf import settings
@@ -45,8 +46,10 @@ INSTALLED_APPS = [
     'django.template',
     'django.contrib.admin',
     'django_countries',
-    'django.contrib.sessions',
     'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.sites',
     'django-bootstrap4',
     'django_telegram_bot',
@@ -63,14 +66,15 @@ INSTALLED_APPS = [
     'my_menu'
     'allauth',
     'allauth.account',
-    'django.contrib.staticfiles',
     'allauth.socialaccount',
-    'socialaccount',
+    'django.contrib.staticfiles',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.linkedin',
 ]
+TELEGRAM_BOT_TOKEN = 'your_bot_token_here'
+TELEGRAM_BOT_WEBHOOK_URL = 'https://yourdomain.com/telegram-bot/'
 # Указываем доступные языки для нашего проекта.
 LANGUAGES = [
     ('uk', 'Українська'),
@@ -120,7 +124,7 @@ TEMPLATES = [
             os.path.join( BASE_DIR, 'templates/base_templates' ),
 
         ],
-        'APP_DIRS': False,
+        'APP_DIRS':True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -182,6 +186,10 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
     # ... 'allauth.socialaccount.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
