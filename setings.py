@@ -1,8 +1,8 @@
-# settings.py
+# settings.py from django_telegram_bot import models
 import os
 import sys
-from django_telegram_bot import models
 
+import django
 from allauth import socialaccount
 from django.conf import settings
 import allauth.socialaccount
@@ -17,8 +17,6 @@ from django.conf import settings
 from django.core.checks import templates
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
-import accounts, art_event, helpy, offer, reviews, telegram_bot
 from helpy import my_menu, static
 
 SECRET_KEY = "django-insecure-!*_55!=_67w%7*s)(3=#2l)h0)+7!jw^y3v2dp^9^co1*sp%gx"
@@ -61,7 +59,7 @@ INSTALLED_APPS = [
     "offer",
     "reviews",
     "telegram_bot",
-    "my_menu" "allauth",
+    "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "django.contrib.staticfiles",
