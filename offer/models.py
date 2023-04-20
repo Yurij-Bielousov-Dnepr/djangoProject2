@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 
 class Helper(models.Model):
     USER_TYPE_CHOICES = (
-        ('helper', 'Помощник'),
-        ('customer', 'Клиент'),
+        ("helper", "Помощник"),
+        ("customer", "Клиент"),
     )
     name = models.CharField(max_length=255)
     vip = models.BooleanField(default=False)
@@ -21,5 +21,3 @@ class Helper(models.Model):
     email = models.EmailField(max_length=255, blank=True, null=True)
     soft_skills = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
-
-

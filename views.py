@@ -1,8 +1,15 @@
 # views.py
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+
 # from .forms import ArticleForm, EventForm, HelperForm
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 
 # from helpy.forms import EventForm, ArticleForm
 # from helpy.models import Article, Event, Helper

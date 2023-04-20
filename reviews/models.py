@@ -9,35 +9,35 @@ from offer.models import Helper
 # Re_view - для отзыва на помошника
 class Re_view(models.Model):
     RATING_CHOICES = (
-        (1, '1 звезда'),
-        (2, '2 звезды'),
-        (3, '3 звезды'),
-        (4, '4 звезды'),
-        (5, '5 звезд'),
+        (1, "1 звезда"),
+        (2, "2 звезды"),
+        (3, "3 звезды"),
+        (4, "4 звезды"),
+        (5, "5 звезд"),
     )
 
     LEVEL_CHOICES = [
-        (1, 'Level 1'),
-        (2, 'Level 2'),
-        (3, 'Level 3'),
+        (1, "Level 1"),
+        (2, "Level 2"),
+        (3, "Level 3"),
     ]
 
     TAG_CHOICES = [
-        ('moto_rent', _('Moto Rent')),
-        ('moto_beginner', _('Moto Beginner')),
-        ('moto_sos', _('Moto SOS')),
-        ('rent_estate', _('Rent Estate')),
-        ('public_serv', _('Public Service')),
-        ('lang_schol', _('Language School')),
-        ('trabl', _('Travel')),
-        ('med_help', _('Medical Help')),
-        ('serv_transl', _('Translation Services')),
-        ('shopping_destination', _('Shopping Destination')),
-        ('clothing', _('Clothing')),
-        ('food', _('Food')),
-        ('souvenirs', _('Souvenirs')),
-        ('ind_tour', _('Individual Tour')),
-        ('escort', _('Escort')),
+        ("moto_rent", _("Moto Rent")),
+        ("moto_beginner", _("Moto Beginner")),
+        ("moto_sos", _("Moto SOS")),
+        ("rent_estate", _("Rent Estate")),
+        ("public_serv", _("Public Service")),
+        ("lang_schol", _("Language School")),
+        ("trabl", _("Travel")),
+        ("med_help", _("Medical Help")),
+        ("serv_transl", _("Translation Services")),
+        ("shopping_destination", _("Shopping Destination")),
+        ("clothing", _("Clothing")),
+        ("food", _("Food")),
+        ("souvenirs", _("Souvenirs")),
+        ("ind_tour", _("Individual Tour")),
+        ("escort", _("Escort")),
     ]
 
     reviewer_name = models.CharField(max_length=255)
@@ -53,15 +53,17 @@ class Re_view(models.Model):
         return f"Review for {self.helper_name} by {self.reviewer_name}"
 
     # Review - для отзыва на статью или событие
-class Review( models.Model ):
+
+
+class Review(models.Model):
     RATING_CHOICES = (
-            (1, '1 звезда'),
-            (2, '2 звезды'),
-            (3, '3 звезды'),
-            (4, '4 звезды'),
-            (5, '5 звезд'),
-        )
-    helper = models.ForeignKey( Helper, on_delete=models.CASCADE )
-    customer_name = models.CharField( max_length=255 )
-    rating = models.IntegerField( choices=RATING_CHOICES )
+        (1, "1 звезда"),
+        (2, "2 звезды"),
+        (3, "3 звезды"),
+        (4, "4 звезды"),
+        (5, "5 звезд"),
+    )
+    helper = models.ForeignKey(Helper, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=255)
+    rating = models.IntegerField(choices=RATING_CHOICES)
     comment = models.TextField()

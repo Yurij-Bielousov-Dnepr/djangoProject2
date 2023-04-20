@@ -4,10 +4,11 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler, Updater, MessageHandler
+
 #  from telegram.ext.filters import Filters
 from telegram_bot.views import echo
 
-bot = telegram.Bot(token='6121382783:AAExuYESoAEE8-KZl5r9NgjBlEVyqXvChik')
+bot = telegram.Bot(token="6121382783:AAExuYESoAEE8-KZl5r9NgjBlEVyqXvChik")
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -22,9 +23,11 @@ def start(update: Update, context: CallbackContext) -> None:
     /ger - Deutsche Sprache
     """
     update.message.reply_text(text)
+
+
 def language_eng(update: Update, context: CallbackContext) -> None:
     """Set the language to English."""
-    context.user_data['language'] = 'eng'
+    context.user_data["language"] = "eng"
     text = """
     You have chosen English language. 
         On our website, we offer services for selecting a friendly local 
@@ -37,12 +40,15 @@ def language_eng(update: Update, context: CallbackContext) -> None:
     our island has to offer. 
         Additionally, you can add your skills and abilities to our database for service provision.
     Here is the link to our website: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 def language_ukr(update: Update, context: CallbackContext) -> None:
     """Set the language to Ukrainian."""
-    context.user_data['language'] = 'ukr'
+    context.user_data["language"] = "ukr"
     text = """
     Ви вибрали українську мову.
         На нашому сайті ми пропонуємо послуги з підбору дружнього аборигена,
@@ -55,12 +61,15 @@ def language_ukr(update: Update, context: CallbackContext) -> None:
     що наш острів може запропонувати. 
          Також ви можете додати свої навички та можливості до бази даних для надання послуг.
     Ось посилання на наш сайт: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 def language_thai(update: Update, context: CallbackContext) -> None:
     """Set the language to Thai."""
-    context.user_data['language'] = 'thai'
+    context.user_data["language"] = "thai"
     text = """
     คุณได้เลือกภาษาไทยแล้ว ภาษาไทย: 
     บนเว็บไซต์ของเราเรามีบริการเลือกคนบ้านที่เป็นมิตรที่พร้อมช่วยคุณแก้ปัญหาโดยรับค่าตอบแทนที่เบาๆ
@@ -70,12 +79,15 @@ def language_thai(update: Update, context: CallbackContext) -> None:
     สำหรับการช้อปปิ้งสำหรับเสื้อผ้าอาหารอร่อยหรือของฝากเพื่อให้คุณสามารถเพลิดเพลินไปกับทุกสิ่งที่เกาะของเรามีเสนอได้อย่างสะดวกสบาย 
     นอกจากนี้คุณยังสามารถเพิ่มทักษะและความสามารถของคุณในฐานข้อมูลเพื่อให้บริการได้
     นี่คือลิงก์ไปยังเว็บไซต์ของเรา: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 def language_fre(update: Update, context: CallbackContext) -> None:
     """Set the language to French."""
-    context.user_data['language'] = 'fre'
+    context.user_data["language"] = "fre"
     text = """ Vous avez choisi la langue française.
         Sur notre site web, nous offrons des services de sélection d'un
     autochtone amical prêt à vous aider à résoudre des problèmes moyennant 
@@ -85,12 +97,15 @@ def language_fre(update: Update, context: CallbackContext) -> None:
     tous les problèmes, y compris la location de motos, la formation, 
     l'assistance médicale ou les traductions, ainsi que des achats pratiques
     Voici le lien vers notre site web: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 def language_ita(update: Update, context: CallbackContext) -> None:
     """Set the language to Italian."""
-    context.user_data['language'] = 'ita'
+    context.user_data["language"] = "ita"
     text = """Hai scelto la lingua italiana.
         Sul nostro sito offriamo servizi di ricerca di un amichevole aborigeno,
     pronto ad aiutarti a risolvere i problemi in cambio di una modesta ricompensa. 
@@ -103,12 +118,15 @@ def language_ita(update: Update, context: CallbackContext) -> None:
         Puoi anche inserire le tue competenze e le tue opportunità
     nel nostro database per fornire servizi."
     Ecco il link al nostro sito web: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 def language_rus(update: Update, context: CallbackContext) -> None:
     """Set the language to Russian."""
-    context.user_data['language'] = 'rus'
+    context.user_data["language"] = "rus"
     text = """Вы выбрали русский язык. 
         На нашем сайте мы предлагаем услуги по подбору дружелюбного аборигена,
     который готов помочь вам в решении проблем за скромное вознаграждение. 
@@ -119,12 +137,15 @@ def language_rus(update: Update, context: CallbackContext) -> None:
     наслаждаться всем, что наш остров может предложить. 
         Также вы можете внести свои навыки и возможности в базу данных для предоставления услуг
     Вот ссылка на наш сайт: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 def language_ger(update: Update, context: CallbackContext) -> None:
     """Set the language to German."""
-    context.user_data['language'] = 'ger'
+    context.user_data["language"] = "ger"
     text = """Sie haben die deutsche Sprache gewählt.
         Auf unserer Website bieten wir Dienstleistungen zur Suche nach einem 
     freundlichen Ureinwohner an, der bereit ist, Ihnen gegen eine bescheidene 
@@ -138,24 +159,28 @@ def language_ger(update: Update, context: CallbackContext) -> None:
         Sie können auch Ihre Fähigkeiten und Möglichkeiten in unsere Datenbank
     eingeben, um Dienstleistungen anzubieten."
     Hier ist der Link zu unserer Website: {site_url}
-    """.format(site_url=settings.SITE_URL)
+    """.format(
+        site_url=settings.SITE_URL
+    )
     update.message.reply_text(text)
+
 
 @csrf_exempt
 def telegram_webhook(request):
     bot = telegram.Bot(token=settings.TELEGRAM_BOT_TOKEN)
     update = telegram.Update.de_json(request.body, bot)
     dispatcher = Updater(bot.token, use_context=True).dispatcher
-    dispatcher.add_handler(CommandHandler('start', start))
-    dispatcher.add_handler(CommandHandler('rus', language_rus))
-    dispatcher.add_handler(CommandHandler('ukr', language_ukr))
-    dispatcher.add_handler(CommandHandler('thai', language_thai))
-    dispatcher.add_handler(CommandHandler('eng', language_eng))
-    dispatcher.add_handler(CommandHandler('fre', language_fre))
-    dispatcher.add_handler(CommandHandler('ita', language_ita))
-    dispatcher.add_handler(CommandHandler('ger', language_ger))
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("rus", language_rus))
+    dispatcher.add_handler(CommandHandler("ukr", language_ukr))
+    dispatcher.add_handler(CommandHandler("thai", language_thai))
+    dispatcher.add_handler(CommandHandler("eng", language_eng))
+    dispatcher.add_handler(CommandHandler("fre", language_fre))
+    dispatcher.add_handler(CommandHandler("ita", language_ita))
+    dispatcher.add_handler(CommandHandler("ger", language_ger))
     dispatcher.process_update(update)
     return HttpResponse(status=200)
+
 
 # Функция для настройки webhook
 def set_webhook():
@@ -168,7 +193,8 @@ def set_webhook():
     # Установка нового вебхука
     bot.set_webhook(url=url)
 
-    return HttpResponse('Webhook настроен успешно.')
+    return HttpResponse("Webhook настроен успешно.")
+
 
 # Функция-обработчик входящих сообщений
 @csrf_exempt
@@ -186,4 +212,4 @@ def webhook(request):
     update = telegram.Update.de_json(request.body, bot)
     dp.process_update(update)
 
-    return HttpResponse('OK.')
+    return HttpResponse("OK.")

@@ -1,12 +1,14 @@
 # models.py
 from django.db import models
 
+
 class Article(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     rating = models.IntegerField(default=0)
     tags = models.CharField(max_length=255)
     is_approved = models.BooleanField(default=False)
+
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -17,30 +19,30 @@ class Event(models.Model):
     is_approved = models.BooleanField(default=False)
 
 
-class Region( models.Model ):
-    CHAWENG = 'Chaweng'
-    LAMAI = 'Lamai'
-    LIPA_NOI = 'Lipa Noi'
-    NATHON = 'Nathon'
-    BANG_BOR = 'Bang Bor'
-    MAENAM = 'Maenam'
-    BOPHUT = 'Bophut'
-    CHOENG_MON = 'Choeng Mon'
-    HUA_THANON = 'Hua Thanon'
+class Region(models.Model):
+    CHAWENG = "Chaweng"
+    LAMAI = "Lamai"
+    LIPA_NOI = "Lipa Noi"
+    NATHON = "Nathon"
+    BANG_BOR = "Bang Bor"
+    MAENAM = "Maenam"
+    BOPHUT = "Bophut"
+    CHOENG_MON = "Choeng Mon"
+    HUA_THANON = "Hua Thanon"
 
     REGION_CHOICES = [
-        (CHAWENG, 'Chaweng'),
-        (LAMAI, 'Lamai'),
-        (LIPA_NOI, 'Lipa Noi'),
-        (NATHON, 'Nathon'),
-        (BANG_BOR, 'Bang Bor'),
-        (MAENAM, 'Maenam'),
-        (BOPHUT, 'Bophut'),
-        (CHOENG_MON, 'Choeng Mon'),
-        (HUA_THANON, 'Hua Thanon'),
+        (CHAWENG, "Chaweng"),
+        (LAMAI, "Lamai"),
+        (LIPA_NOI, "Lipa Noi"),
+        (NATHON, "Nathon"),
+        (BANG_BOR, "Bang Bor"),
+        (MAENAM, "Maenam"),
+        (BOPHUT, "Bophut"),
+        (CHOENG_MON, "Choeng Mon"),
+        (HUA_THANON, "Hua Thanon"),
     ]
 
-    name = models.CharField( max_length=255, choices=REGION_CHOICES )
+    name = models.CharField(max_length=255, choices=REGION_CHOICES)
 
     def __str__(self):
         return self.name
@@ -63,7 +65,10 @@ class Helper(models.Model):
 
     def __str__(self):
         return self.name
+
+
 # Краткое описание полей:
+
 
 # name - имя помощника-спонсора
 # tags - теги, связь многие ко многим с моделью Tag
@@ -71,22 +76,22 @@ class Helper(models.Model):
 # region - район, связь один ко многим с моделью Region
 # contacts - контактная информация помощника-спонсора
 class Language(models.Model):
-    UKRAINIAN = 'uk'
-    THAI = 'th'
-    ENGLISH = 'en'
-    FRENCH = 'fr'
-    ITALIAN = 'it'
-    GERMAN = 'de'
-    RUSSIAN = 'ru'
+    UKRAINIAN = "uk"
+    THAI = "th"
+    ENGLISH = "en"
+    FRENCH = "fr"
+    ITALIAN = "it"
+    GERMAN = "de"
+    RUSSIAN = "ru"
 
     LANGUAGE_CHOICES = [
-        (UKRAINIAN, 'Українська'),
-        (THAI, 'ไทย'),
-        (ENGLISH, 'English'),
-        (FRENCH, 'Français'),
-        (ITALIAN, 'Italiano'),
-        (GERMAN, 'Deutsch'),
-        (RUSSIAN, 'Русский'),
+        (UKRAINIAN, "Українська"),
+        (THAI, "ไทย"),
+        (ENGLISH, "English"),
+        (FRENCH, "Français"),
+        (ITALIAN, "Italiano"),
+        (GERMAN, "Deutsch"),
+        (RUSSIAN, "Русский"),
     ]
 
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES)

@@ -8,7 +8,7 @@ from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters
 import logging
 
 logger = logging.getLogger(__name__)
-TOKEN = '6121382783:AAExuYESoAEE8-KZl5r9NgjBlEVyqXvChik'
+TOKEN = "6121382783:AAExuYESoAEE8-KZl5r9NgjBlEVyqXvChik"
 
 # Инициализируйте телеграм-бота и диспетчера
 bot = Bot(token=TOKEN)
@@ -29,7 +29,7 @@ def echo(update, context):
 @require_POST
 @csrf_exempt
 def webhook(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         # Преобразование входящего JSON-объекта в объект Telegram Update
         update = telegram.Update.de_json(request.body, bot)
 
@@ -47,16 +47,17 @@ def webhook(request):
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(MessageHandler(Filters.text, echo))
 
+
 def telegram_bot(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         # Получите данные, отправленные пользователем из формы
-        chat_id = request.POST.get('chat_id')
-        message_text = request.POST.get('message_text')
+        chat_id = request.POST.get("chat_id")
+        message_text = request.POST.get("message_text")
 
         # Инициализируйте телеграм-бота с помощью токена бота
-        bot = telegram.Bot(token='6055423350:AAHOxcGzuCEeLxWOudMZHty_fiwqSTc0NJQ')
+        bot = telegram.Bot(token="6055423350:AAHOxcGzuCEeLxWOudMZHty_fiwqSTc0NJQ")
 
         # Отправьте сообщение пользователю
         bot.send_message(chat_id=chat_id, text=message_text)
 
-    return render( request, 'helpy/telegram_bot.html' )
+    return render(request, "helpy/telegram_bot.html")
