@@ -4,7 +4,6 @@ from offer.models import Helper
 from helpy.models import Tag_help, HelpRequest, HelpRequestLanguage
 from art_event.models import Article, Event
 from accounts.models import (
-    Visitor,
     Sponsor,
     Stats,
     Language,
@@ -15,7 +14,6 @@ from accounts.models import (
 )
 
 # admin.site.register(Tag)
-admin.site.register(Visitor)
 admin.site.register(Article)
 admin.site.register(Event)
 admin.site.register(Helper)
